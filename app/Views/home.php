@@ -1,5 +1,4 @@
 <?= $this->extend('layouts/main') ?>
-
 <?= $this->section('content') ?>
 
 <div class="container-fluid">
@@ -220,7 +219,6 @@
                             class="form-control"
                             rows="2"
                             placeholder="Apa yang dipelajari hari ini?"
-                            minlenght="100"
                             required></textarea>
 
                     </div>

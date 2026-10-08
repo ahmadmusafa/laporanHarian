@@ -65,6 +65,19 @@
 
             <ul class="nav nav-pills flex-column gap-1">
 
+                <!-- dashboard -->
+                <li class="nav-item">
+
+                    <a
+                        href="<?= base_url('/dashboard') ?>"
+                        class="nav-link text-body-secondary d-flex align-items-center gap-1">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
+
                 <!-- LAPORAN -->
                 <li class="nav-item">
 
