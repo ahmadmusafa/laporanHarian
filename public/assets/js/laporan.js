@@ -102,57 +102,22 @@ $(document).ready(function () {
 
   // TANGGAL & WAKTU
   function updateTanggalWaktu() {
-    const sekarang = new Date();
+    const now = new Date();
 
-    const hari = [
-      "Minggu",
-      "Senin",
-      "Selasa",
-      "Rabu",
-      "Kamis",
-      "Jumat",
-      "Sabtu",
-    ];
+    $("#tanggalHari").text(
+      now.toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    );
 
-    const bulan = [
-      "Januari",
-      "Februari",
-      "Maret",
-      "April",
-      "Mei",
-      "Juni",
-      "Juli",
-      "Agustus",
-      "September",
-      "Oktober",
-      "November",
-      "Desember",
-    ];
-
-    const namaHari = hari[sekarang.getDay()];
-
-    const tanggal = sekarang.getDate();
-
-    const namaBulan = bulan[sekarang.getMonth()];
-
-    const tahun = sekarang.getFullYear();
-
-    const jam = String(sekarang.getHours()).padStart(2, "0");
-
-    const menit = String(sekarang.getMinutes()).padStart(2, "0");
-
-    const detik = String(sekarang.getSeconds()).padStart(2, "0");
-
-    $("#tanggalHari").text(`${namaHari}, ${tanggal} ${namaBulan} ${tahun}`);
-
-    $("#waktuSekarang").text(`${jam}:${menit}:${detik} WIB`);
+    $("#waktuSekarang").text(now.toLocaleTimeString("id-ID") + " WIB");
   }
 
-  // Jalankan pertama kali
-  updateTanggalWaktu();
-
-  // Update setiap 1 detik
   setInterval(updateTanggalWaktu, 1000);
+  updateTanggalWaktu();
 
   // Dark/Light
   $(".theme-option").click(function () {

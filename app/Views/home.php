@@ -220,6 +220,7 @@
                             class="form-control"
                             rows="2"
                             placeholder="Apa yang dipelajari hari ini?"
+                            minlenght="100"
                             required></textarea>
 
                     </div>
@@ -238,7 +239,6 @@
                             placeholder="Tuliskan kendala selama pembelajaran"></textarea>
 
                     </div>
-
                 </div>
 
                 <div class="modal-footer">
