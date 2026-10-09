@@ -58,19 +58,11 @@
 
         <!-- SIDEBAR CONTENT -->
         <div class="p-3">
-
-            <div class="text-body-secondary small fw-semibold mb-2 px-2">
-                MENU UTAMA
-            </div>
-
             <ul class="nav nav-pills flex-column gap-1">
-
-                <!-- dashboard -->
                 <li class="nav-item">
-
                     <a
                         href="<?= base_url('/dashboard') ?>"
-                        class="nav-link text-body-secondary d-flex align-items-center gap-1">
+                        class="nav-link text-body-secondary d-flex align-items-center gap-1 <?= service('uri')->getSegment(1) == 'dashboard' ? 'active' : '' ?>">
                         <i class="bi bi-speedometer2"></i>
                         <span>
                             Dashboard
@@ -78,20 +70,17 @@
                     </a>
                 </li>
 
-                <!-- LAPORAN -->
                 <li class="nav-item">
-
                     <a
                         href="<?= base_url('/home') ?>"
-                        class="nav-link text-body-secondary d-flex align-items-center gap-1">
-                        <i class="bi bi-journal-text fs-5"></i>
+                        class="nav-link text-body-secondary d-flex align-items-center gap-1 <?= service('uri')->getSegment(1) == 'home' ? 'active' : '' ?>">
+                        <i class="bi bi-journal-medical"></i>
                         <span>
-                            Laporan Harian
+                            Riwayat Laporan
                         </span>
                     </a>
                 </li>
 
-                <!-- PROFIL -->
                 <li class="nav-item">
                     <a
                         href="#"
@@ -105,39 +94,7 @@
                     </a>
                 </li>
 
-                <!-- Kalender -->
-                <li class="nav-item">
-                    <a
-                        href="#"
-                        class="nav-link text-body-secondary d-flex align-items-center gap-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalProfil">
-                        <i class="bi bi-calendar4-event"></i>
-                        <span>
-                            Kalender
-                        </span>
-                    </a>
-                </li>
-
             </ul>
-
-        </div>
-
-        <!-- LOGOUT -->
-        <div class="position-absolute bottom-0 start-0 w-100 p-2 border-top">
-
-            <?php if (logged_in()): ?>
-
-                <a
-                    href="<?= url_to('logout') ?>"
-                    class="nav-link text-body-danger d-flex align-items-center gap-1">
-                    <i class="bi bi-box-arrow-right fs-5"></i>
-                    <span>
-                        Logout
-                    </span>
-                </a>
-
-            <?php endif; ?>
 
         </div>
 
@@ -152,104 +109,112 @@
             transition: margin-left 0.7s ease;
         ">
 
-        <!-- HEADER -->
-        <header class="bg-body border-bottom sticky-top shadow-sm">
+    <!-- HEADER -->
+    <header class="bg-body border-bottom sticky-top shadow-sm">
+        <div
+            class="d-flex align-items-center justify-content-between px-4"
+            style="height: 70px;">
 
-            <div
-                class="d-flex align-items-center justify-content-between px-4"
-                style="height: 70px;">
+            <div class="d-flex align-items-center">
 
-                <!-- LEFT -->
-                <div class="d-flex align-items-center">
+                <!-- SIDEBAR TOGGLE -->
+                <button
+                    type="button"
+                    class="btn btn-outline-secondary me-3"
+                    id="sidebarToggle">
+                    <i class="bi bi-list fs-5"></i>
+                </button>
 
-                    <!-- SIDEBAR TOGGLE -->
-                    <button
-                        type="button"
-                        class="btn btn-outline-secondary me-3"
-                        id="sidebarToggle">
-                        <i class="bi bi-list fs-5"></i>
-                    </button>
+                <div>
+                    <h5 class="mb-0 fw-semibold">
+                        Laporan Aktifitas
+                    </h5>
+                </div>
 
-                    <!-- TITLE -->
-                    <div>
+            </div>
 
-                        <h5 class="mb-0 fw-semibold">
-                            Laporan Aktifitas
-                        </h5>
+            <div class="d-flex align-items-center gap-4">
+                <!-- TANGGAL & WAKTU -->
+                <div class="text-end">
 
+                    <div
+                        class="fw-semibold"
+                        id="tanggalHari">
+                        -
                     </div>
 
-                </div>
-
-                <!-- RIGHT -->
-                <div class="d-flex align-items-center gap-4">
-
-                    <!-- TANGGAL & WAKTU -->
-                    <div class="text-end">
-
-                        <div
-                            class="fw-semibold"
-                            id="tanggalHari">
-                            -
-                        </div>
-
-                        <small
-                            class="text-body-secondary"
-                            id="waktuSekarang">
-                            -
-                        </small>
+                    <small
+                        class="text-body-secondary"
+                        id="waktuSekarang">
+                        -
+                    </small>
 
                 </div>
 
-                    <!-- THEME -->
+            <!-- DARK/LIGHT -->
+            <div class="dropdown">
+
+                <button
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    id="themeToggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i id="themeIcon" class="bi bi-moon-fill"></i>
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-end">
+                    <button
+                        type="button"
+                        class="dropdown-item theme-option"
+                        data-theme="light">
+                        <i class="bi bi-sun-fill me-2"></i>
+                        Light
+                    </button>
+
+                    <button
+                        type="button"
+                        class="dropdown-item theme-option"
+                        data-theme="dark">
+                        <i class="bi bi-moon-fill me-2"></i>
+                        Dark
+                    </button>
+                </div>
+
+            </div>
+                
+        <!-- AVATAR / MENU USER -->
+        <?php if (logged_in()): ?>
         <div class="dropdown">
-
             <button
-                class="btn btn-outline-secondary dropdown-toggle"
-                id="themeToggle"
+                class="btn btn-outline-secondary rounded-circle d-flex
+                   align-items-center justify-content-center p-0"
                 type="button"
                 data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <i id="themeIcon" class="bi bi-moon-fill"></i>
+                aria-expanded="false"
+                title="Menu Pengguna"
+                style="width: 40px; height: 40px;">
+                <i   i class="bi bi-person-fill fs-5"></i>
             </button>
 
-            <div class="dropdown-menu dropdown-menu-end">
-
-                <button
-                    type="button"
-                    class="dropdown-item theme-option"
-                    data-theme="light">
-                    <i class="bi bi-sun-fill me-2"></i>
-                    Light
-                </button>
-
-                <button
-                    type="button"
-                    class="dropdown-item theme-option"
-                    data-theme="dark">
-                    <i class="bi bi-moon-fill me-2"></i>
-                    Dark
-                </button>
-
-            </div>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li>
+                    <a
+                        class="dropdown-item text-danger"
+                        href="<?= url_to('logout') ?>">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <?php endif; ?>
 
         </div>
-                    <!-- USER -->
-                    <?php if (logged_in()): ?>
 
-                        <div class="text-end border-start ps-4">
-                            <small class="text-body">
-                                <?= esc(user()->email) ?>
-                            </small>
-                        </div>
+    </div>
 
-                    <?php endif; ?>
-
-                </div>
-
-            </div>
-
-        </header>
+</header>
 
         <!-- CONTENT -->
         <main class="flex-grow-1 p-4">

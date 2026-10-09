@@ -97,7 +97,7 @@
                 </h5>
 
                 <div class="alert alert-success">
-                    Laporan hari ini sudah diisi, tatapi belum di kirim ke grup IT SINSEN
+                    Laporan hari ini sudah diisi, tatapi belum di kirim ke grup IT SINSEN dan MagangHub
                 </div>
 
                 <div class="mb-3">
