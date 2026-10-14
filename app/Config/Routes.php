@@ -24,7 +24,7 @@ $routes->post(
     'Aktifitas::update/$1'
 );
 
-$routes->get(
+$routes->post(
     'aktifitas/hapus/(:num)',
     'Aktifitas::hapus/$1'
 );

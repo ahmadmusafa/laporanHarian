@@ -22,7 +22,9 @@
                     Anda belum mengisi laporan hari ini.
                 </div>
 
-                <form id="formLaporanHariIni">
+                <form id="formLaporanHariIni" 
+                action="<?= base_url('aktifitas/simpan') ?>" 
+                method="POST">
 
                     <input type="hidden"
                            name="tanggal"
