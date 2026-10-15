@@ -9,7 +9,7 @@ $routes->get('/', 'Dashboard::index', ['filter' => 'login']);
 $routes->get('dashboard', 'Dashboard::index', ['filter' => 'login']);
 
 // Laporan Aktifitas
-$routes->get('/home', 'Aktifitas::index', ['filter' => 'login']);
+$routes->get('/aktifitas', 'Aktifitas::index', ['filter' => 'login']);
 
 // CRUD
 $routes->post('aktifitas/simpan', 'Aktifitas::simpan');
@@ -24,7 +24,7 @@ $routes->post(
     'Aktifitas::update/$1'
 );
 
-$routes->post(
+$routes->get(
     'aktifitas/hapus/(:num)',
     'Aktifitas::hapus/$1'
 );

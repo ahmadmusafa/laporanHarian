@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Aktifitas Harian</title>
 
@@ -72,8 +72,8 @@
 
                 <li class="nav-item">
                     <a
-                        href="<?= base_url('/home') ?>"
-                        class="nav-link text-body-secondary d-flex align-items-center gap-1 <?= service('uri')->getSegment(1) == 'home' ? 'active' : '' ?>">
+                        href="<?= base_url('/aktifitas') ?>"
+                        class="nav-link text-body-secondary d-flex align-items-center gap-1 <?= service('uri')->getSegment(1) == 'aktifitas' ? 'active' : '' ?>">
                         <i class="bi bi-journal-medical"></i>
                         <span>
                             Riwayat Laporan
@@ -125,11 +125,11 @@
                     <i class="bi bi-list fs-5"></i>
                 </button>
 
-                <div>
+                <!-- <div>
                     <h5 class="mb-0 fw-semibold">
                         Laporan Aktifitas
                     </h5>
-                </div>
+                </div> -->
 
             </div>
 
@@ -272,13 +272,11 @@
 
                         <!-- AVATAR -->
                         <div class="mb-3">
-
                             <div
                                 class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center"
                                 style="width: 70px; height: 70px;">
                                 <i class="bi bi-person-fill fs-2"></i>
                             </div>
-
                         </div>
 
                         <?php if (logged_in()): ?>
@@ -286,12 +284,6 @@
                             <p class="text-body-secondary mb-0">
                                 <?= esc(user()->email) ?>
                             </p>
-
-                        <?php else: ?>
-
-                            <h5 class="fw-bold">
-                                Belum Login
-                            </h5>
 
                         <?php endif; ?>
 

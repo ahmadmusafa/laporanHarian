@@ -99,7 +99,7 @@
                 </h5>
 
                 <div class="alert alert-success">
-                    Laporan hari ini sudah diisi, tatapi belum di kirim ke grup IT SINSEN dan MagangHub
+                    Laporan hari ini sudah diisi, <b>Harap kirimkan di jam 15.45 di grup WhatsApp IT SINSEN dan MagangHub!!!</b>
                 </div>
 
                 <div class="mb-3">
@@ -124,7 +124,7 @@
                 </div>
             </div>
         </div>
-
+ 
     <?php endif; ?>
 
 </div>

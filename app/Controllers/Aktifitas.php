@@ -10,26 +10,41 @@ class Aktifitas extends BaseController
 
     public function __construct()
     {
+        helper('auth');
         $this->aktifitasModel = new AktifitasModel();
     }
 
-    // Menampilkan semua data
+    // Menampilkan laporan milik pengguna yang login
     public function index()
     {
+        $userId = user_id();
+
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
+
         $data = [
             'title' => 'Aktifitas Harian',
             'aktivitas' => $this->aktifitasModel
+                ->where('user_id', $userId)
                 ->orderBy('tanggal', 'DESC')
                 ->findAll()
         ];
 
-        return view('home', $data);
+        return view('aktifitas', $data);
     }
 
-    // Menyimpan data baru
+    // Menyimpan laporan baru
     public function simpan()
     {
+        $userId = user_id();
+
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
+
         $data = [
+            'user_id'          => $userId,
             'tanggal'          => $this->request->getPost('tanggal'),
             'uraian_aktifitas' => $this->request->getPost('uraian_aktifitas'),
             'pembelajaran'     => $this->request->getPost('pembelajaran'),
@@ -38,19 +53,31 @@ class Aktifitas extends BaseController
 
         $this->aktifitasModel->insert($data);
 
-        return redirect()->to('/home')
+        return redirect()->to('/aktifitas')
             ->with('success', 'Laporan berhasil ditambahkan.');
     }
 
-    // Mengambil satu data berdasarkan ID
+    // Mengambil laporan berdasarkan ID dan pemilik
     public function getData($id)
     {
-        $data = $this->aktifitasModel->find($id);
+        $userId = user_id();
+
+        if (!$userId) {
+            return $this->response->setStatusCode(401)->setJSON([
+                'status' => false,
+                'message' => 'Silakan login terlebih dahulu.'
+            ]);
+        }
+
+        $data = $this->aktifitasModel
+            ->where('user_id', $userId)
+            ->where('id_aktifitas', $id)
+            ->first();
 
         if (!$data) {
-            return $this->response->setJSON([
+            return $this->response->setStatusCode(404)->setJSON([
                 'status' => false,
-                'message' => 'Data tidak ditemukan'
+                'message' => 'Data tidak ditemukan atau bukan milik Anda.'
             ]);
         }
 
@@ -60,9 +87,25 @@ class Aktifitas extends BaseController
         ]);
     }
 
-    // Mengubah data
+    // Mengubah laporan milik pengguna yang login
     public function update($id)
     {
+        $userId = user_id();
+
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
+
+        $laporan = $this->aktifitasModel
+            ->where('user_id', $userId)
+            ->where('id_aktifitas', $id)
+            ->first();
+
+        if (!$laporan) {
+            return redirect()->to('/aktifitas')
+                ->with('error', 'Data tidak ditemukan atau bukan milik Anda.');
+        }
+
         $data = [
             'tanggal'          => $this->request->getPost('tanggal'),
             'uraian_aktifitas' => $this->request->getPost('uraian_aktifitas'),
@@ -72,16 +115,32 @@ class Aktifitas extends BaseController
 
         $this->aktifitasModel->update($id, $data);
 
-        return redirect()->to('/home')
+        return redirect()->to('/aktifitas')
             ->with('success', 'Laporan berhasil diperbarui.');
     }
 
-    // Menghapus data
+    // Menghapus laporan milik pengguna yang login
     public function hapus($id)
     {
+        $userId = user_id();
+
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
+
+        $laporan = $this->aktifitasModel
+            ->where('user_id', $userId)
+            ->where('id_aktifitas', $id)
+            ->first();
+
+        if (!$laporan) {
+            return redirect()->to('/aktifitas')
+                ->with('error', 'Data tidak ditemukan atau bukan milik Anda.');
+        }
+
         $this->aktifitasModel->delete($id);
 
-        return redirect()->to('/home')
+        return redirect()->to('/aktifitas')
             ->with('success', 'Laporan berhasil dihapus.');
     }
 }

@@ -38,7 +38,7 @@ class AuthController extends Controller
 
     /**
      * Displays the login form, or redirects
-     * the user to their destination/home if
+     * the user to their destination/aktifitas if
      * they are already logged in.
      */
     public function login()
