@@ -1,8 +1,28 @@
+
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
 
 <div class="container-fluid py-3">
+
+    <!-- Notifikasi -->
+    <?php if (session()->getFlashdata('success')): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            <?= esc(session()->getFlashdata('success')) ?>
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="alert" aria-label="Tutup"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-circle me-2"></i>
+            <?= esc(session()->getFlashdata('error')) ?>
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="alert" aria-label="Tutup"></button>
+        </div>
+    <?php endif; ?>
 
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -11,15 +31,13 @@
             <p class="text-muted mb-0">Kelola dokumen dan lampiran.</p>
         </div>
 
-        <button type="button"
-                class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#modalLampiran">
+        <button type="button" class="btn btn-primary"
+                data-bs-toggle="modal" data-bs-target="#modalLampiran">
             <i class="bi bi-plus-lg me-1"></i> Tambah Lampiran
         </button>
     </div>
 
-    <!-- Tabel -->
+    <!-- Tabel Lampiran -->
     <div class="card border-0 shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -38,6 +56,7 @@
                     <tbody>
                         <?php foreach ($lampiran as $item): ?>
                             <tr>
+                                <td></td>
 
                                 <td>
                                     <div class="fw-semibold">
@@ -61,9 +80,7 @@
 
                                 <td>
                                     <div class="d-flex gap-1">
-                                        <a href="<?= site_url(
-                                            'lampiran/download/' . $item['id_lampiran']
-                                        ) ?>"
+                                        <a href="<?= site_url('lampiran/download/' . $item['id_lampiran']) ?>"
                                            class="btn btn-sm btn-outline-primary"
                                            title="Download">
                                             <i class="bi bi-download"></i>
@@ -87,17 +104,14 @@
     </div>
 </div>
 
-
 <!-- Modal Tambah Lampiran -->
 <div class="modal fade" id="modalLampiran" tabindex="-1"
      aria-labelledby="judulModalLampiran" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
-            <form id="formLampiran"
-                  action="<?= site_url('lampiran/store') ?>"
-                  method="post"
-                  enctype="multipart/form-data">
+            <form action="<?= site_url('lampiran/tambah') ?>"
+                  method="post" enctype="multipart/form-data">
 
                 <?= csrf_field() ?>
 
@@ -114,42 +128,36 @@
                         <label for="nama_dokumen" class="form-label">
                             Nama Dokumen
                         </label>
-                        <input type="text"
-                               name="nama_dokumen"
-                               id="nama_dokumen"
-                               class="form-control"
+                        <input type="text" name="nama_dokumen"
+                               id="nama_dokumen" class="form-control"
                                maxlength="150"
-                               placeholder="Tambah Nama Dokumen"
-                               required>
+                               placeholder="Masukkan nama dokumen" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="id_aktifitas" class="form-label">
                             Aktivitas
                         </label>
-                        <select name="id_aktifitas"
-                                id="id_aktifitas"
+                        <select name="id_aktifitas" id="id_aktifitas"
                                 class="form-select">
                             <option value="">Dokumen mandiri</option>
 
-                            <?php foreach ($aktifitas as $aktifitas): ?>
-                                <option value="<?= $aktifitas['id_aktifitas'] ?>">
-                                    <?= esc($aktifitas['tanggal']) ?>
+                            <?php foreach ($aktifitas as $aktivitasItem): ?>
+                                <option value="<?= $aktivitasItem['id_aktifitas'] ?>">
+                                    <?= esc($aktivitasItem['tanggal']) ?>
                                     -
-                                    <?= esc($aktifitas['uraian_aktifitas']) ?>
+                                    <?= esc($aktivitasItem['uraian_aktifitas']) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
                         <div class="form-text">
-                            Pilih aktivitas jika dokumen berkaitan dengan laporan harian.
+                            Pilih aktivitas jika dokumen terkait laporan harian.
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label for="file" class="form-label">Pilih File</label>
-                        <input type="file"
-                               name="file"
-                               id="file"
+                        <input type="file" name="file" id="file"
                                class="form-control"
                                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                required>
@@ -162,25 +170,21 @@
                         <label for="keterangan" class="form-label">
                             Keterangan
                         </label>
-                        <textarea name="keterangan"
-                                  id="keterangan"
-                                  class="form-control"
-                                  rows="3"
-                                  placeholder="Tambahkan keterangan dokumen"></textarea>
+                        <textarea name="keterangan" id="keterangan"
+                                  class="form-control" rows="3"
+                                  placeholder="Keterangan dokumen"></textarea>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light"
-                            data-bs-dismiss="modal">
-                        Batal
-                    </button>
+                            data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-save me-1"></i>Simpan
                     </button>
                 </div>
-
             </form>
+
         </div>
     </div>
 </div>
@@ -192,47 +196,30 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="judulModalHapus">Hapus Lampiran</h5>
+                <h5 class="modal-title" id="judulModalHapus">
+                    Hapus Lampiran
+                </h5>
                 <button type="button" class="btn-close"
                         data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
 
-            <div class="modal-body">
-                Apakah kamu yakin ingin menghapus
-                <strong id="namaLampiranHapus"></strong>?
-            </div>
+            <form id="formHapusLampiran" method="post" action="">
+                <?= csrf_field() ?>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light"
-                        data-bs-dismiss="modal">
-                    Batal
-                </button>
+                <div class="modal-body">
+                    Apakah kamu yakin ingin menghapus
+                    <strong id="namaLampiranHapus"></strong>?
+                </div>
 
-                <form id="formHapusLampiran" method="post">
-                    <?= csrf_field() ?>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light"
+                            data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-danger">
                         Hapus
                     </button>
-                </form>
-            </div>
+                </div>
+            </form>
 
-        </div>
-    </div>
-</div>
-
-<!-- Toast Notifikasi -->
-<div class="toast-container position-fixed top-0 end-0 p-3">
-    <div id="toastLampiran"
-         class="toast align-items-center border-0"
-         role="alert"
-         aria-live="assertive"
-         aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body" id="pesanToastLampiran"></div>
-            <button type="button"
-                    class="btn-close btn-close-white me-2 m-auto"
-                    data-bs-dismiss="toast"
-                    aria-label="Tutup"></button>
         </div>
     </div>
 </div>
@@ -240,20 +227,8 @@
 <!-- Konfigurasi JavaScript -->
 <script>
     window.lampiranConfig = {
-        deleteUrl: <?= json_encode(site_url('lampiran/delete')) ?>
+        deleteUrl: "<?= site_url('lampiran/hapus') ?>"
     };
-
-    <?php if (session()->getFlashdata('success')): ?>
-        window.pesanLampiran = {
-            pesan: <?= json_encode(session()->getFlashdata('success')) ?>,
-            berhasil: true
-        };
-    <?php elseif (session()->getFlashdata('error')): ?>
-        window.pesanLampiran = {
-            pesan: <?= json_encode(session()->getFlashdata('error')) ?>,
-            berhasil: false
-        };
-    <?php endif; ?>
 </script>
 
 <script src="<?= base_url('assets/js/lampiran.js') ?>"></script>

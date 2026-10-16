@@ -73,7 +73,7 @@ class Lampiran extends BaseController
     }
 
     // Upload dokumen baru
-    public function store()
+    public function tambah()
     {
         $userId = $this->currentUserId();
 

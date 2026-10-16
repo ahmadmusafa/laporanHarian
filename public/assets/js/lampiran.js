@@ -44,7 +44,7 @@ $(document).ready(function () {
     },
   });
 
-  // Konfirmasi hapus
+  // Modal konfirmasi hapus
   $(document).on("click", ".btnHapus", function () {
     const id = $(this).data("id");
     const nama = $(this).data("nama");
@@ -60,22 +60,4 @@ $(document).ready(function () {
       document.getElementById("modalHapusLampiran"),
     ).show();
   });
-
-  // Toast notifikasi
-  function tampilkanToast(pesan, berhasil = true) {
-    const elemenToast = document.getElementById("toastLampiran");
-
-    $("#pesanToastLampiran").text(pesan);
-
-    $("#toastLampiran")
-      .removeClass("text-bg-success text-bg-danger")
-      .addClass(berhasil ? "text-bg-success" : "text-bg-danger");
-
-    bootstrap.Toast.getOrCreateInstance(elemenToast).show();
-  }
-
-  // Tampilkan flashdata dari CodeIgniter
-  if (window.pesanLampiran) {
-    tampilkanToast(window.pesanLampiran.pesan, window.pesanLampiran.berhasil);
-  }
 });
