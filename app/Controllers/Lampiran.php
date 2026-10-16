@@ -165,7 +165,7 @@ class Lampiran extends BaseController
     
 public function hapus(int $id)
 {
-    $userId = $this->currentUserId();
+    $userId = user_id();
 
     if (!$userId) {
         return redirect()->to(site_url('login'));

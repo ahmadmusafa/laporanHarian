@@ -47,7 +47,7 @@ $(document).ready(function () {
 
     $("#formHapusLampiran").attr(
       "action",
-      window.lampiranConfig.deleteUrl + "/" + id,
+      window.lampiranConfig.deleteUrl + "lampiran/hapus" + id,
     );
 
     bootstrap.Modal.getOrCreateInstance(
