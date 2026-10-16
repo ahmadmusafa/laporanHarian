@@ -38,7 +38,7 @@ $(document).ready(function () {
     },
   });
 
-  // Konfirmasi sebelum menghapus
+  // Konfirmasi sebelum menghapus lampiran
   $(document).on("click", ".btnHapus", function () {
     const id = $(this).data("id");
     const nama = $(this).data("nama");
@@ -47,7 +47,7 @@ $(document).ready(function () {
 
     $("#formHapusLampiran").attr(
       "action",
-      window.lampiranConfig.deleteUrl + "lampiran/hapus" + id,
+      window.lampiranConfig.deleteUrl + "/" + id,
     );
 
     bootstrap.Modal.getOrCreateInstance(

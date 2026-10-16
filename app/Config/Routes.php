@@ -18,7 +18,7 @@ $routes->group('lampiran', ['filter' => 'login'], static function ($routes) {
     $routes->post('tambah', 'Lampiran::tambah');
     $routes->post('update/(:num)', 'Lampiran::update/$1');
     $routes->get('download/(:num)', 'Lampiran::download/$1');
-    $routes->post('hapus/(:num)', 'Lampiran::hapus/$1');
+   $routes->get('delete/(:num)', 'Lampiran::delete/$1');
 });
 
 // CRUD

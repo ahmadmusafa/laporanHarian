@@ -86,13 +86,14 @@
                                             <i class="bi bi-download"></i>
                                         </a>
 
-                                        <button type="button"
-                                                class="btn btn-sm btn-outline-danger btnHapus"
-                                                data-id="<?= $item['id_lampiran'] ?>"
-                                                data-nama="<?= esc($item['nama_dokumen']) ?>"
-                                                title="Hapus">
+                                        <a href="<?= site_url('lampiran/delete/' . $item['id_lampiran']) ?>"
+                                            type="button"
+                                            class="btn btn-sm btn-outline-danger btnHapus"
+                                            data-id="<?= $item['id_lampiran'] ?>"
+                                            data-nama="<?= esc($item['nama_dokumen']) ?>"
+                                            title="Hapus">
                                             <i class="bi bi-trash"></i>
-                                        </button>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -224,13 +225,8 @@
     </div>
 </div>
 
-<!-- Konfigurasi JavaScript -->
-<script>
-    window.lampiranConfig = {
-        deleteUrl: "<?= site_url('lampiran/hapus') ?>"
-    };
-</script>
+<?= $this->endSection() ?>
 
+<?= $this->section('scripts') ?>
 <script src="<?= base_url('assets/js/lampiran.js') ?>"></script>
-
 <?= $this->endSection() ?>

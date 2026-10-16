@@ -163,7 +163,7 @@ class Lampiran extends BaseController
     }
 
     
-public function hapus(int $id)
+public function delete(int $id)
 {
     $userId = user_id();
 
@@ -186,7 +186,7 @@ public function hapus(int $id)
 
     if (!$this->lampiranModel->delete($id)) {
         return redirect()->to(site_url('lampiran'))
-            ->with('error', 'Dokumen gagal dihapus.');
+            ->with('error', 'Dokumen gagal didelete.');
     }
 
     if (is_file($path)) {
