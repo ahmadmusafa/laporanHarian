@@ -181,66 +181,58 @@
                         <label class="form-label">
                             Tanggal
                         </label>
-
                         <input
                             type="date"
                             name="tanggal"
                             class="form-control"
                             value="<?= date('Y-m-d') ?>"
                             required>
-
                     </div>
 
                     <!-- Uraian -->
                     <div class="mb-3">
-
                         <label class="form-label">
                             Uraian Aktifitas
                         </label>
-
                         <textarea
                             name="uraian_aktifitas"
                             class="form-control"
                             rows="2"
+                            minlength="100"
                             placeholder="Tuliskan aktifitas hari ini..."
                             required></textarea>
-
                     </div>
 
                     <!-- Pembelajaran -->
                     <div class="mb-3">
-
                         <label class="form-label">
                             Pembelajaran
                         </label>
-
                         <textarea
                             name="pembelajaran"
                             class="form-control"
                             rows="2"
+                            minlength="100"
                             placeholder="Apa yang dipelajari hari ini?"
                             required></textarea>
-
                     </div>
 
                     <!-- Kendala -->
                     <div class="mb-3">
-
                         <label class="form-label">
                             Kendala
                         </label>
-
                         <textarea
                             name="kendala"
                             class="form-control"
                             rows="2"
-                            placeholder="Tuliskan kendala selama pembelajaran"></textarea>
-
+                            minlength="100"
+                            placeholder="Tuliskan kendala selama pembelajaran"
+                            required></textarea>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-
                     <button
                         type="button"
                         class="btn btn-secondary"

@@ -6,7 +6,7 @@ use App\Models\AktifitasModel;
 
 class Aktifitas extends BaseController
 {
-    protected $aktifitasModel;
+    protected AktifitasModel $aktifitasModel;
 
     public function __construct()
     {
@@ -44,7 +44,7 @@ class Aktifitas extends BaseController
         }
 
         $data = [
-            'user_id'          => $userId,
+            'user_id'          => $this->request->getPost('user_id'),
             'tanggal'          => $this->request->getPost('tanggal'),
             'uraian_aktifitas' => $this->request->getPost('uraian_aktifitas'),
             'pembelajaran'     => $this->request->getPost('pembelajaran'),
@@ -58,7 +58,7 @@ class Aktifitas extends BaseController
     }
 
     // Mengambil laporan berdasarkan ID dan pemilik
-    public function getData($id)
+    public function getData(int $id)
     {
         $userId = user_id();
 
@@ -88,7 +88,7 @@ class Aktifitas extends BaseController
     }
 
     // Mengubah laporan milik pengguna yang login
-    public function update($id)
+    public function update(int $id)
     {
         $userId = user_id();
 
@@ -120,7 +120,7 @@ class Aktifitas extends BaseController
     }
 
     // Menghapus laporan milik pengguna yang login
-    public function hapus($id)
+    public function hapus(int $id)
     {
         $userId = user_id();
 

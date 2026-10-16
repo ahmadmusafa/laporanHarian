@@ -80,6 +80,17 @@
                         </span>
                     </a>
                 </li>
+                
+                <li class="nav-item">
+                    <a
+                        href="<?= base_url('/lampiran') ?>"
+                        class="nav-link text-body-secondary d-flex align-items-center gap-1 <?= service('uri')->getSegment(1) == 'lampiran' ? 'active' : '' ?>">
+                        <i class="bi bi-paperclip"></i>
+                        <span>
+                            Lampiran
+                        </span>
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a

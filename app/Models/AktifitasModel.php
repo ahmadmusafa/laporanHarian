@@ -7,9 +7,7 @@ use CodeIgniter\Model;
 class AktifitasModel extends Model
 {
     protected $table = 'aktifitas';
-
     protected $primaryKey = 'id_aktifitas';
-
     protected $returnType = 'array';
 
     protected $allowedFields = [

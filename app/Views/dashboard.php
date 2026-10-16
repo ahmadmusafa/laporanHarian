@@ -42,7 +42,7 @@
                                   required></textarea>
 
                         <small class="text-muted">
-                            Minimal 100 karakter.
+                            *Minimal 100 karakter.
                         </small>
                     </div>
 
@@ -58,7 +58,7 @@
                                   required></textarea>
 
                         <small class="text-muted">
-                            Minimal 100 karakter.
+                            *Minimal 100 karakter.
                         </small>
                     </div>
 
@@ -74,7 +74,7 @@
                                   required></textarea>
 
                         <small class="text-muted">
-                            Minimal 100 karakter.
+                            *Minimal 100 karakter.
                         </small>
                     </div>
 

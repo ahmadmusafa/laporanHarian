@@ -11,6 +11,13 @@ $routes->get('dashboard', 'Dashboard::index', ['filter' => 'login']);
 // Laporan Aktifitas
 $routes->get('/aktifitas', 'Aktifitas::index', ['filter' => 'login']);
 
+// Routes Lampiran
+$routes->group('lampiran', ['filter' => 'login'], static function ($routes) {
+    $routes->get('lampiran', 'Lampiran::index');
+    $routes->get('download/(:num)', 'Lampiran::download/$1');
+    $routes->post('delete/(:num)', 'Lampiran::delete/$1');
+});
+
 // CRUD
 $routes->post('aktifitas/simpan', 'Aktifitas::simpan');
 
