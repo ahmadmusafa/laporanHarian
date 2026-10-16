@@ -1,10 +1,8 @@
 $(document).ready(function () {
-  // DataTables
-  $("#tabelLampiran").DataTable({
+  const tabel = $("#tabelLampiran").DataTable({
     pageLength: 7,
     lengthMenu: [7, 14, 21, 28],
     order: [[3, "desc"]],
-
     columnDefs: [
       {
         targets: [0, 4],
@@ -12,17 +10,15 @@ $(document).ready(function () {
         searchable: false,
       },
     ],
-
     language: {
       search: "Cari:",
       searchPlaceholder: "Cari lampiran...",
       lengthMenu: "Tampilkan _MENU_ data",
       info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-      infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+      infoEmpty: "Belum ada data",
       infoFiltered: "(difilter dari _MAX_ total data)",
       zeroRecords: "Data tidak ditemukan",
       emptyTable: "Belum ada lampiran",
-
       paginate: {
         first: "Pertama",
         last: "Terakhir",
@@ -30,12 +26,10 @@ $(document).ready(function () {
         previous: "Sebelumnya",
       },
     },
-
     drawCallback: function () {
-      const api = this.api();
-      const info = api.page.info();
+      const info = this.api().page.info();
 
-      api
+      this.api()
         .column(0, { page: "current" })
         .nodes()
         .each(function (cell, index) {
@@ -44,7 +38,7 @@ $(document).ready(function () {
     },
   });
 
-  // Modal konfirmasi hapus
+  // Konfirmasi sebelum menghapus
   $(document).on("click", ".btnHapus", function () {
     const id = $(this).data("id");
     const nama = $(this).data("nama");

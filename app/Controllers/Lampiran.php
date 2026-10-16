@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Models\LampiranModel;
 use App\Models\AktifitasModel;
+use App\Models\LampiranModel;
 
 class Lampiran extends BaseController
 {
@@ -18,35 +18,18 @@ class Lampiran extends BaseController
         $this->aktifitasModel = new AktifitasModel();
     }
 
-    // Memastikan pengguna sudah login
-    private function currentUserId()
+    private function kembali(string $jenis, string $pesan)
+    {
+        return redirect()->to(site_url('lampiran'))
+            ->with($jenis, $pesan);
+    }
+
+    public function index()
     {
         $userId = user_id();
 
         if (!$userId) {
-            return null;
-        }
-
-        return $userId;
-    }
-
-    // Format respons AJAX
-    private function responseJson(bool $status, string $message, array $data = [])
-    {
-        return $this->response->setJSON([
-            'status'  => $status,
-            'message' => $message,
-            'data'    => $data,
-        ]);
-    }
-
-    // Daftar dokumen
-    public function index()
-    {
-        $userId = $this->currentUserId();
-
-        if (!$userId) {
-            return redirect()->to('/login');
+            return redirect()->to(site_url('login'));
         }
 
         $lampiran = $this->lampiranModel
@@ -66,37 +49,34 @@ class Lampiran extends BaseController
             ->findAll();
 
         return view('lampiran', [
-            'title'    => 'Lampiran Dokumen',
+            'title' => 'Lampiran Dokumen',
             'lampiran' => $lampiran,
             'aktifitas' => $aktifitas,
         ]);
     }
 
-    // Upload dokumen baru
     public function tambah()
     {
-        $userId = $this->currentUserId();
+        $userId = user_id();
 
         if (!$userId) {
-            return $this->responseJson(false, 'Silakan login kembali.');
+            return redirect()->to(site_url('login'));
         }
 
         $rules = [
             'nama_dokumen' => 'required|max_length[150]',
             'file' => [
-                'label' => 'Dokumen',
                 'rules' => [
                     'uploaded[file]',
                     'max_size[file,2048]',
                     'ext_in[file,pdf,doc,docx,jpg,jpeg,png]',
-                    'mime_in[file,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png]',
                 ],
             ],
         ];
 
         if (!$this->validate($rules)) {
-            return $this->responseJson(
-                false,
+            return $this->kembali(
+                'error',
                 implode(' ', $this->validator->getErrors())
             );
         }
@@ -104,7 +84,6 @@ class Lampiran extends BaseController
         $idAktifitas = $this->request->getPost('id_aktifitas');
         $idAktifitas = $idAktifitas !== '' ? $idAktifitas : null;
 
-        // Pastikan aktivitas yang dipilih milik pengguna
         if ($idAktifitas !== null) {
             $aktivitas = $this->aktifitasModel
                 ->where('id_aktifitas', $idAktifitas)
@@ -112,9 +91,9 @@ class Lampiran extends BaseController
                 ->first();
 
             if (!$aktivitas) {
-                return $this->responseJson(
-                    false,
-                    'Aktifitas tidak ditemukan atau bukan milik Anda.'
+                return $this->kembali(
+                    'error',
+                    'Aktivitas tidak ditemukan atau bukan milik Anda.'
                 );
             }
         }
@@ -123,126 +102,43 @@ class Lampiran extends BaseController
 
         $folder = WRITEPATH . 'uploads/lampiran/';
 
-        if (!is_dir($folder)) {
-            mkdir($folder, 0750, true);
+        if (!is_dir($folder) && !mkdir($folder, 0750, true)) {
+            return $this->kembali('error', 'Folder upload gagal dibuat.');
         }
 
-        $namaFile = $file->getClientName();
+        $namaAsli = $file->getClientName();
         $namaSimpan = $file->getRandomName();
 
         if (!$file->move($folder, $namaSimpan)) {
-            return $this->responseJson(
-                false,
-                'Gagal menyimpan file.'
-            );
+            return $this->kembali('error', 'File gagal diunggah.');
         }
 
-        $data = [
-            'user_id'      => $userId,
+        $berhasil = $this->lampiranModel->insert([
+            'user_id' => $userId,
             'id_aktifitas' => $idAktifitas,
-            'nama_dokumen' => trim(
-                $this->request->getPost('nama_dokumen')
-            ),
-            'nama_file'    => $namaFile,
-            'file_path'    => $namaSimpan,
-            'keterangan'   => $this->request->getPost('keterangan'),
-        ];
-
-        if (!$this->lampiranModel->insert($data)) {
-            // Hapus file jika penyimpanan database gagal
-            if (is_file($folder . $namaSimpan)) {
-                unlink($folder . $namaSimpan);
-            }
-
-            return $this->responseJson(
-                false,
-                'Gagal menyimpan data lampiran.'
-            );
-        }
-
-        return $this->responseJson(
-            true,
-            'Dokumen berhasil diunggah.'
-        );
-    }
-
-    // Edit informasi dokumen
-    public function update(int $id)
-    {
-        $userId = $this->currentUserId();
-
-        if (!$userId) {
-            return $this->responseJson(false, 'Silakan login kembali.');
-        }
-
-        $dokumen = $this->lampiranModel
-            ->where('id_lampiran', $id)
-            ->where('user_id', $userId)
-            ->first();
-
-        if (!$dokumen) {
-            return $this->responseJson(
-                false,
-                'Dokumen tidak ditemukan.'
-            );
-        }
-
-        $rules = [
-            'nama_dokumen' => 'required|max_length[150]',
-        ];
-
-        if (!$this->validate($rules)) {
-            return $this->responseJson(
-                false,
-                implode(' ', $this->validator->getErrors())
-            );
-        }
-
-        $idAktifitas = $this->request->getPost('id_aktifitas');
-        $idAktifitas = $idAktifitas !== '' ? $idAktifitas : null;
-
-        if ($idAktifitas !== null) {
-            $aktivitas = $this->aktifitasModel
-                ->where('id_aktifitas', $idAktifitas)
-                ->where('user_id', $userId)
-                ->first();
-
-            if (!$aktivitas) {
-                return $this->responseJson(
-                    false,
-                    'Aktifitas tidak ditemukan atau bukan milik Anda.'
-                );
-            }
-        }
-
-        $berhasil = $this->lampiranModel->update($id, [
-            'id_aktifitas' => $idAktifitas,
-            'nama_dokumen' => trim(
-                $this->request->getPost('nama_dokumen')
-            ),
+            'nama_dokumen' => trim($this->request->getPost('nama_dokumen')),
+            'nama_file' => $namaAsli,
+            'file_path' => $namaSimpan,
             'keterangan' => $this->request->getPost('keterangan'),
         ]);
 
         if (!$berhasil) {
-            return $this->responseJson(
-                false,
-                'Gagal memperbarui dokumen.'
-            );
+            if (is_file($folder . $namaSimpan)) {
+                unlink($folder . $namaSimpan);
+            }
+
+            return $this->kembali('error', 'Data lampiran gagal disimpan.');
         }
 
-        return $this->responseJson(
-            true,
-            'Informasi dokumen berhasil diperbarui.'
-        );
+        return $this->kembali('success', 'Dokumen berhasil diunggah.');
     }
 
-    // Unduh dokumen
     public function download(int $id)
     {
-        $userId = $this->currentUserId();
+        $userId = user_id();
 
         if (!$userId) {
-            return redirect()->to('/login');
+            return redirect()->to(site_url('login'));
         }
 
         $dokumen = $this->lampiranModel
@@ -251,62 +147,54 @@ class Lampiran extends BaseController
             ->first();
 
         if (!$dokumen) {
-            return $this->response->setStatusCode(404)
-                ->setBody('Dokumen tidak ditemukan.');
+            return $this->kembali('error', 'Dokumen tidak ditemukan.');
         }
 
         $path = WRITEPATH . 'uploads/lampiran/'
             . basename($dokumen['file_path']);
 
         if (!is_file($path)) {
-            return $this->response->setStatusCode(404)
-                ->setBody('File tidak ditemukan.');
+            return $this->kembali('error', 'File lampiran tidak ditemukan.');
         }
 
-        return $this->response->download(
-            $path,
-            null
-        )->setFileName($dokumen['nama_file']);
+        return $this->response
+            ->download($path, null)
+            ->setFileName($dokumen['nama_file']);
     }
 
-    // Hapus dokumen
-    public function delete(int $id)
-    {
-        $userId = $this->currentUserId();
+    
+public function hapus(int $id)
+{
+    $userId = $this->currentUserId();
 
-        if (!$userId) {
-            return $this->responseJson(false, 'Silakan login kembali.');
-        }
-
-        $dokumen = $this->lampiranModel
-            ->where('id_lampiran', $id)
-            ->where('user_id', $userId)
-            ->first();
-
-        if (!$dokumen) {
-            return $this->responseJson(
-                false,
-                'Dokumen tidak ditemukan.'
-            );
-        }
-
-        $path = WRITEPATH . 'uploads/lampiran/'
-            . basename($dokumen['file_path']);
-
-        if (!$this->lampiranModel->delete($id)) {
-            return $this->responseJson(
-                false,
-                'Gagal menghapus data dokumen.'
-            );
-        }
-
-        if (is_file($path)) {
-            unlink($path);
-        }
-
-        return $this->responseJson(
-            true,
-            'Dokumen berhasil dihapus.'
-        );
+    if (!$userId) {
+        return redirect()->to(site_url('login'));
     }
+
+    $dokumen = $this->lampiranModel
+        ->where('id_lampiran', $id)
+        ->where('user_id', $userId)
+        ->first();
+
+    if (!$dokumen) {
+        return redirect()->to(site_url('lampiran'))
+            ->with('error', 'Dokumen tidak ditemukan.');
+    }
+
+    $path = WRITEPATH . 'uploads/lampiran/'
+        . basename($dokumen['file_path']);
+
+    if (!$this->lampiranModel->delete($id)) {
+        return redirect()->to(site_url('lampiran'))
+            ->with('error', 'Dokumen gagal dihapus.');
+    }
+
+    if (is_file($path)) {
+        unlink($path);
+    }
+
+    return redirect()->to(site_url('lampiran'))
+        ->with('success', 'Dokumen berhasil dihapus.');
+    }
+
 }
