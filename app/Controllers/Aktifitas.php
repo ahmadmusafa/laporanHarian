@@ -44,7 +44,7 @@ class Aktifitas extends BaseController
         }
 
         $data = [
-            'user_id'          => $this->request->getPost('user_id'),
+            'user_id'          => $userId,
             'tanggal'          => $this->request->getPost('tanggal'),
             'uraian_aktifitas' => $this->request->getPost('uraian_aktifitas'),
             'pembelajaran'     => $this->request->getPost('pembelajaran'),
