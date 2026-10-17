@@ -45,7 +45,6 @@
                        class="table table-striped table-hover align-middle w-100">
                     <thead>
                         <tr>
-                            <th>No</th>
                             <th>Nama Dokumen</th>
                             <th>Aktivitas</th>
                             <th>Tanggal Upload</th>
@@ -56,8 +55,7 @@
                     <tbody>
                         <?php foreach ($lampiran as $item): ?>
                             <tr>
-                                <td></td>
-
+                            
                                 <td>
                                     <div class="fw-semibold">
                                         <?= esc($item['nama_dokumen']) ?>
@@ -86,14 +84,14 @@
                                             <i class="bi bi-download"></i>
                                         </a>
 
-                                        <a href="<?= site_url('lampiran/delete/' . $item['id_lampiran']) ?>"
-                                            type="button"
-                                            class="btn btn-sm btn-outline-danger btnHapus"
-                                            data-id="<?= $item['id_lampiran'] ?>"
-                                            data-nama="<?= esc($item['nama_dokumen']) ?>"
-                                            title="Hapus">
+                                        <button 
+                                        type="button"
+                                        class="btn btn-sm btn-outline-danger btnHapus"
+                                        data-id="<?= $item['id_lampiran'] ?>"
+                                        data-nama="<?= esc($item['nama_dokumen']) ?>"
+                                        title="Hapus">
                                             <i class="bi bi-trash"></i>
-                                        </a>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -141,7 +139,7 @@
                         </label>
                         <select name="id_aktifitas" id="id_aktifitas"
                                 class="form-select">
-                            <option value="">Dokumen mandiri</option>
+                            <option value="">Pilih aktifitas</option>
 
                             <?php foreach ($aktifitas as $aktivitasItem): ?>
                                 <option value="<?= $aktivitasItem['id_aktifitas'] ?>">

@@ -345,6 +345,8 @@
 <!-- JAVASCRIPT PROJECT -->
 <script src="<?= base_url('assets/js/laporan.js') ?>"></script>
 
+<?= $this->renderSection('scripts') ?>
+
 </body>
 
 </html>

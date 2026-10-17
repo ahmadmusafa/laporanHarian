@@ -40,6 +40,7 @@ $(document).ready(function () {
 
   // Konfirmasi sebelum menghapus lampiran
   $(document).on("click", ".btnHapus", function () {
+    console.log("Tombol Hapus diklik");
     const id = $(this).data("id");
     const nama = $(this).data("nama");
 
