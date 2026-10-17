@@ -13,11 +13,8 @@ class LampiranModel extends Model
 
     protected $allowedFields = [
         'id_aktifitas',
-        'user_id',
         'nama_dokumen',
-        'nama_file',
         'file_path',
-        'keterangan',
     ];
 
     protected $useTimestamps = true;

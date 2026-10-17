@@ -64,11 +64,12 @@
                     <th>Uraian Aktifitas</th>
                     <th>Pembelajaran</th>
                     <th>Kendala</th>
+                    <!-- <th>Lampiran</th> -->
                     <th width="5%" class="text-center">Aksi</th>
                 </tr>
             </thead>
 
-<tbody>
+    <tbody>
 
         <?php if (!empty($aktivitas)) : ?>
         <?php $no = 1; ?>
@@ -85,20 +86,66 @@
                         <?= date('d/m/y', strtotime($item['tanggal'])) ?>
                     </span>
                 </td>
-
+                
                 <td>
-                        <?= esc($item['uraian_aktifitas']) ?>
+                    <?php
+                    $teks = $item['uraian_aktifitas'];
+                    $id = 'uraian-' . $item['id_aktifitas'];?>
+                    <?= esc(mb_substr($teks, 0, 100)) ?>
+
+                    <?php if (mb_strlen($teks) > 100): ?>
+                    <span id="<?= $id ?>" class="d-none">
+                        <?= esc(mb_substr($teks, 100)) ?>
+                    </span>
+                    <button type="button"
+                        class="btn btn-link btn-sm p-0 read-more"
+                        data-target="<?= $id ?>">
+                        Selengkapnya
+                    </button>
+                    <?php endif; ?>
                 </td>
 
                 <td>
-                    <?= esc($item['pembelajaran']) ?>
+                    <?php
+                    $teks = $item['pembelajaran'];
+                    $id = 'pembelajaran-' . $item['id_aktifitas'];?>
+                    <?= esc(mb_substr($teks, 0, 100)) ?>
+
+                    <?php if (mb_strlen($teks) > 100): ?>
+                    <span id="<?= $id ?>" class="d-none">
+                        <?= esc(mb_substr($teks, 100)) ?>
+                    </span>
+                    <button type="button"
+                        class="btn btn-link btn-sm p-0 read-more"
+                        data-target="<?= $id ?>">
+                        Selengkapnya
+                    </button>
+                    <?php endif; ?>
                 </td>
 
                 <td>
-                    <?= !empty($item['kendala'])
-                    ? esc($item['kendala'])
+                    <?php
+                    $teks = $item['kendala'];
+                    $id = 'kendala-' . $item['id_aktifitas'];?>
+                    <?= esc(mb_substr($teks, 0, 100)) ?>
+
+                    <?php if (mb_strlen($teks) > 100): ?>
+                    <span id="<?= $id ?>" class="d-none">
+                        <?= esc(mb_substr($teks, 100)) ?>
+                    </span>
+                    <button type="button"
+                        class="btn btn-link btn-sm p-0 read-more"
+                        data-target="<?= $id ?>">
+                        Selengkapnya
+                    </button>
+                    <?php endif; ?>
+                </td>
+
+                <!-- <td>
+                    <?= !empty($item['lampiran'])
+                    ? esc($item['lampiran'])
                     : '-' ?>
-                </td>
+                </td> -->
 
                 <td class="text-center">
                     <div class="d-flex justify-content-center gap-1">
@@ -155,10 +202,12 @@
         <div class="modal-content">
 
             <form
-                action="<?= base_url('aktifitas/simpan') ?>"
-                method="post">
+        id="formTambah"
+    action="<?= site_url('aktifitas/simpan') ?>"
+    method="post"
+    enctype="multipart/form-data">
 
-                <?= csrf_field() ?>
+    <?= csrf_field() ?>
 
                 <div class="modal-header">
 
@@ -179,7 +228,7 @@
                     <!-- Tanggal -->
                     <div class="mb-3">
                         <label class="form-label">
-                            Tanggal
+                            <strong>Tanggal</strong>
                         </label>
                         <input
                             type="date"
@@ -192,7 +241,7 @@
                     <!-- Uraian -->
                     <div class="mb-3">
                         <label class="form-label">
-                            Uraian Aktifitas
+                            <strong>Uraian Aktifitas</strong>
                         </label>
                         <textarea
                             name="uraian_aktifitas"
@@ -206,7 +255,7 @@
                     <!-- Pembelajaran -->
                     <div class="mb-3">
                         <label class="form-label">
-                            Pembelajaran
+                            <strong>Pembelajaran</strong>
                         </label>
                         <textarea
                             name="pembelajaran"
@@ -220,7 +269,7 @@
                     <!-- Kendala -->
                     <div class="mb-3">
                         <label class="form-label">
-                            Kendala
+                            <strong>Kendala</strong>
                         </label>
                         <textarea
                             name="kendala"
@@ -230,7 +279,24 @@
                             placeholder="Tuliskan kendala selama pembelajaran"
                             required></textarea>
                     </div>
-                </div>
+
+                    <div class="mb-3">
+                        <label for="lampiran" class="form-label">
+                            <strong>Dokumen (Opsional)</strong>
+                        </label>
+
+                        <input
+                            type="file"
+                            name="lampiran[]"
+                            id="lampiran"
+                            class="form-control"
+                            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                            multiple
+                            >
+                        <div class="form-text">
+                            Bisa memilih beberapa file sekaligus. Maksimal 2 MB per file.
+                        </div>
+                    </div>  
 
                 <div class="modal-footer">
                     <button
@@ -428,12 +494,16 @@
                     Batal
                 </button>
 
-                <a
-                    id="btnKonfirmasiHapus"
-                    class="btn btn-danger">
-                    <i class="bi bi-trash3 me-1"></i>
-                    Ya, Hapus
-                </a>
+                
+<form id="formHapus" method="post">
+    <?= csrf_field() ?>
+
+    <button type="submit" class="btn btn-danger">
+        <i class="bi bi-trash3 me-1"></i>
+        Ya, Hapus
+    </button>
+</form>
+
 
             </div>
 

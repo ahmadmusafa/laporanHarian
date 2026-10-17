@@ -24,19 +24,6 @@
         </div>
     <?php endif; ?>
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h4 class="mb-1">Lampiran</h4>
-            <p class="text-muted mb-0">Kelola dokumen dan lampiran.</p>
-        </div>
-
-        <button type="button" class="btn btn-primary"
-                data-bs-toggle="modal" data-bs-target="#modalLampiran">
-            <i class="bi bi-plus-lg me-1"></i> Tambah Lampiran
-        </button>
-    </div>
-
     <!-- Tabel Lampiran -->
     <div class="card border-0 shadow-sm">
         <div class="card-body">
@@ -103,7 +90,7 @@
     </div>
 </div>
 
-<!-- Modal Tambah Lampiran -->
+<!-- Modal Tambah Lampiran
 <div class="modal fade" id="modalLampiran" tabindex="-1"
      aria-labelledby="judulModalLampiran" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -186,7 +173,7 @@
 
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- Modal Konfirmasi Hapus -->
 <div class="modal fade" id="modalHapusLampiran" tabindex="-1"
