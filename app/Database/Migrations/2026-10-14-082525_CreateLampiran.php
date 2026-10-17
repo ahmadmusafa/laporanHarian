@@ -30,7 +30,7 @@ class CreateLampiran extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'path_file' => [
+            'file_path' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],

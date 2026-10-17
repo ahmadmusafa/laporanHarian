@@ -85,11 +85,11 @@
                                         </a>
 
                                         <button 
-                                        type="button"
-                                        class="btn btn-sm btn-outline-danger btnHapus"
-                                        data-id="<?= $item['id_lampiran'] ?>"
-                                        data-nama="<?= esc($item['nama_dokumen']) ?>"
-                                        title="Hapus">
+                                            type="button"
+                                            class="btn btn-sm btn-outline-danger btnHapus"
+                                            data-id="<?= $item['id_lampiran'] ?>"
+                                            data-nama="<?= esc($item['nama_dokumen']) ?>"
+                                            title="Hapus">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>

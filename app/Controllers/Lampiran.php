@@ -133,6 +133,7 @@ class Lampiran extends BaseController
         return $this->kembali('success', 'Dokumen berhasil diunggah.');
     }
 
+    // download file lampiran
     public function download(int $id)
     {
         $userId = user_id();
