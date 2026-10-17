@@ -202,12 +202,10 @@
         <div class="modal-content">
 
             <form
-        id="formTambah"
-    action="<?= site_url('aktifitas/simpan') ?>"
-    method="post"
-    enctype="multipart/form-data">
+                action="<?= base_url('aktifitas/simpan') ?>"
+                method="post">
 
-    <?= csrf_field() ?>
+                <?= csrf_field() ?>
 
                 <div class="modal-header">
 
@@ -282,21 +280,24 @@
 
                     <div class="mb-3">
                         <label for="lampiran" class="form-label">
-                            <strong>Dokumen (Opsional)</strong>
-                        </label>
+                    <strong>Dokumen (Opsional)</strong>
+    </label>
 
-                        <input
-                            type="file"
-                            name="lampiran[]"
-                            id="lampiran"
-                            class="form-control"
-                            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                            multiple
-                            >
-                        <div class="form-text">
-                            Bisa memilih beberapa file sekaligus. Maksimal 2 MB per file.
-                        </div>
-                    </div>  
+    <input
+        type="file"
+        name="lampiran[]"
+        id="lampiran"
+        class="form-control"
+        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+        multiple
+    >
+
+    <div class="form-text">
+        Bisa memilih beberapa file sekaligus. Maksimal 2 MB per file.
+    </div>
+</div>
+
+                </div>
 
                 <div class="modal-footer">
                     <button
@@ -494,16 +495,12 @@
                     Batal
                 </button>
 
-                
-<form id="formHapus" method="post">
-    <?= csrf_field() ?>
-
-    <button type="submit" class="btn btn-danger">
-        <i class="bi bi-trash3 me-1"></i>
-        Ya, Hapus
-    </button>
-</form>
-
+                <a
+                    id="btnKonfirmasiHapus"
+                    class="btn btn-danger">
+                    <i class="bi bi-trash3 me-1"></i>
+                    Ya, Hapus
+                </a>
 
             </div>
 
